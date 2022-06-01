@@ -1,5 +1,4 @@
 "Configuracion basica de nvim 
-
 set number 
 set mouse=a
 set numberwidth=1
@@ -17,35 +16,33 @@ set laststatus=2
 call plug#begin('~/.vim/plugges')
 
 "Theme
-
-Plug 'tiagovla/tokyodark.nvim'
+Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 
 "Lsp
-
 Plug 'neovim/nvim-lspconfig'
 
 "Autocomplete
-
 Plug 'nvim-lua/completion-nvim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 "Syntax
-
 Plug'sheerun/Vim-polyglot'
 Plug 'jiangmiao/auto-pairs'
 Plug 'alvan/vim-closetag'
 Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 "Format
-
-Plug 'sbdchd/neoformat'
+Plug 'lukas-reineke/lsp-format.nvim'
 
 "Status Bar`s
+Plug 'nvim-lualine/lualine.nvim'
+Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
 
-Plug 'itchyny/lightline.vim'
-Plug 'akinsho/bufferline.nvim'
+
+"Icons
 Plug 'kyazdani42/nvim-web-devicons'
-
+"Plug 'ryanoasis/vim-devicons'
 
 "Git 
 Plug 'lewis6991/gitsigns.nvim'
@@ -53,14 +50,10 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'sindrets/diffview.nvim'
 
 "Tree
-
-Plug 'preservim/nerdtree' |
-            \ Plug 'Xuyuanp/nerdtree-git-plugin' |
-            \ Plug 'ryanoasis/vim-devicons'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'kyazdani42/nvim-tree.lua'
+Plug 'nvim-telescope/telescope.nvim'
 
 "Navigation
-
 Plug 'easymotion/vim-easymotion'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'karb94/neoscroll.nvim'
@@ -68,82 +61,79 @@ Plug 'karb94/neoscroll.nvim'
 call plug#end()
 
 "Theme
+let g:lightline = {'colorscheme': 'tokyonight'}
+colorscheme tokyonight
 
-let g:tokyodark_color_gamma = "1.0"
-colorscheme tokyodark
+"Tree
+lua << END
+require'nvim-tree'.setup {}
+END
 
 "Lsp
-
 lua << EOF
 require'lspconfig'.pyright.setup{on_attach=require'completion'.on_attachc}
+require'lspconfig'.cssls.setup{}
+require'lspconfig'.html.setup{}
+require'lspconfig'.jsonls.setup{}
+require'lspconfig'.jedi_language_server.setup{}
 EOF
 
-"Format
-
-" Enable alignment
-let g:neoformat_basic_format_align = 1
-
-" Enable tab to space conversion
-let g:neoformat_basic_format_retab = 1
-
-" Enable trimmming of trailing whitespace
-let g:neoformat_basic_format_trim = 1
+lua << END
+require("lsp-format").setup {}
+require "lspconfig".gopls.setup { on_attach = require "lsp-format".on_attach }
+END
 
 "Bufferline
-
 set termguicolors
 lua << EOF
 require("bufferline").setup{}
 EOF
 
-" Vim Script
+"lualine
+lua << END
+require('lualine').setup()
+END
 
+"Neoscroll
+lua << END
+require('neoscroll').setup()
+END
+
+"Gitsings
+lua << END
+require('gitsigns').setup()
+END
+
+"Icons
+lua << END
+require'nvim-web-devicons'.get_icons()
+END
+
+" Vim Script
 let mapleader=" "
-let NERDTreeQuitOnOpen=1
-let g:NERDTreeGitStatusUseNerdFonts = 1 " you should install nerdfonts by yourself. default: 0
 let g:deoplete#enable_at_startup = 1
-let g:lightline = {'colorscheme': 'tokyonight'}
 
 "Configuracion de letras
-
-nmap <Leader>s <Plug>(easymotion-s2) 
-nmap <Leader>n :NERDTreeFind<CR>
+nmap <Leader>s <Plug>(easymotion-s2)
+nmap <leader>n :NvimTreeToggle<CR>
+nmap <leader>nr :NvimTreeRefresh<CR>
+nmap <leader>nf :NvimTreeFindFileToggle<CR>
 nmap <Leader>w :w!<CR>
 nmap <Leader>q :q!<CR>
 nmap <Leader>p :PlugInstall<CR>
-nmap <Leader>f :FZF<CR>
+nmap <Leader>f :Telescope find_files<CR>
+nmap <Leader>fb :Telescope buffers<CR>
 nmap <Leader>g :DiffviewFileHistory<CR>
 nmap <Leader>t :Neoformat! python<CR>
 
-"lightline
+nmap <Leader>1 :BufferLineGoToBuffer 1<CR>
+nmap <Leader>2 :BufferLineGoToBuffer 2<CR>
+nmap <Leader>3 :BufferLineGoToBuffer 3<CR>
+nmap <Leader>4 :BufferLineGoToBuffer 4<CR>
+nmap <Leader>5 :BufferLineGoToBuffer 5<CR>
+nmap <Leader>6 :BufferLineGoToBuffer 6<CR>
+nmap <Leader>7 :BufferLineGoToBuffer 7<CR>
+nmap <Leader>8 :BufferLineGoToBuffer 8<CR>
+nmap <Leader>9 :BufferLineGoToBuffer 9<CR>
 
-let g:lightline = {
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'FugitiveHead'
-      \ },
-      \ }
-      
-"nerdtree git
-
-let g:NERDTreeGitStatusUntrackedFilesMode = 'all'
-let g:NERDTreeGitStatusGitBinPath = '/your/file/path'
-let g:NERDTreeGitStatusShowClean = 1
-let g:NERDTreeGitStatusConcealBrackets = 1
-let g:NERDTreeGitStatusIndicatorMapCustom = {
-                \ 'Modified'  :'✹',
-                \ 'Staged'    :'✚',
-                \ 'Untracked' :'✭',
-                \ 'Renamed'   :'➜',
-                \ 'Unmerged'  :'═',
-                \ 'Deleted'   :'✖',
-                \ 'Dirty'     :'✗',
-                \ 'Ignored'   :'☒',
-                \ 'Clean'     :'✔︎',
-                \ 'Unknown'   :'?',
-                \ }
-                
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | end
