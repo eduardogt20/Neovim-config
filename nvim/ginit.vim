@@ -14,7 +14,7 @@ endif
 
 " Disable GUI Popupmenu
 if exists(':GuiPopupmenu')
-    GuiPopupmenu 1
+    GuiPopupmenu 0
 endif
 
 " Enable GUI ScrollBar
