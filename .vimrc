@@ -17,6 +17,7 @@ call plug#begin('~/.vim/plugges')
 
 "Theme
 Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
+Plug 'navarasu/onedark.nvim'
 
 "Lsp
 Plug 'neovim/nvim-lspconfig'
@@ -61,8 +62,13 @@ Plug 'karb94/neoscroll.nvim'
 call plug#end()
 
 "Theme
-let g:lightline = {'colorscheme': 'tokyonight'}
-colorscheme tokyonight
+"let g:lightline = {'colorscheme': 'tokyonight'}
+"colorscheme tokyonight
+
+let g:onedark_config = {
+    \ 'style': 'darker',
+\}
+colorscheme onedark
 
 "Tree
 lua << END
