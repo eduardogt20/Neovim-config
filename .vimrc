@@ -27,7 +27,7 @@ Plug 'nvim-lua/completion-nvim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 "Syntax
-Plug'sheerun/Vim-polyglot'
+Plug 'sheerun/Vim-polyglot'
 Plug 'jiangmiao/auto-pairs'
 Plug 'alvan/vim-closetag'
 Plug 'lukas-reineke/indent-blankline.nvim'
@@ -131,7 +131,6 @@ vim.cmd [[highlight IndentBlanklineIndent6 guifg=#C678DD gui=nocombine]]
 
 vim.opt.list = true
 vim.opt.listchars:append("space:⋅")
-vim.opt.listchars:append("eol:↴")
 
 require("indent_blankline").setup {
     space_char_blankline = " ",
