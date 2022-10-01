@@ -1,6 +1,6 @@
-{
-	"suggest.noselect":false,
-	"suggest.completionItemKindLabels": {
+{   
+    "suggest.noselect":false,
+    "suggest.completionItemKindLabels": {
     "method": "  ",
     "function": "  ",
     "variable": "[]",
@@ -26,5 +26,5 @@
     "constructor": "  ",
     "value": "  ",
     "enumMember": "  "
-  },
+  }
 }

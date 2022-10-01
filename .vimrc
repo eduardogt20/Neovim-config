@@ -1,22 +1,21 @@
 "Configuracion basica de nvim 
-set number 
-set mouse=a
-set numberwidth=1
-set clipboard=unnamed
+set number
+set mouse =a
+set numberwidth =1
+set clipboard =unnamed
 syntax on
 set showcmd
 set ruler
-set encoding=UTF-8
+set encoding =UTF-8
 set showmatch
-set sw=2
+set sw =2
 set relativenumber
-set laststatus=2
+set laststatus =2
 
 
 call plug#begin('~/.vim/plugges')
 
 "Theme
-Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 Plug 'navarasu/onedark.nvim'
 
 "Lsp
@@ -24,7 +23,7 @@ Plug 'neovim/nvim-lspconfig'
 
 "Autocomplete
 Plug 'nvim-lua/completion-nvim'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
 
 "Syntax
 Plug 'sheerun/Vim-polyglot'
@@ -33,13 +32,9 @@ Plug 'alvan/vim-closetag'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
-"Format
-Plug 'lukas-reineke/lsp-format.nvim'
-
 "Status Bar`s
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' }
-
 
 "Icons
 Plug 'kyazdani42/nvim-web-devicons'
@@ -62,9 +57,6 @@ Plug 'karb94/neoscroll.nvim'
 call plug#end()
 
 "Theme
-"let g:lightline = {'colorscheme': 'tokyonight'}
-"colorscheme tokyonight
-
 let g:onedark_config = {
     \ 'style': 'darker',
 \}
@@ -77,17 +69,12 @@ END
 
 "Lsp
 lua << EOF
-require'lspconfig'.pyright.setup{on_attach=require'completion'.on_attachc}
+require'lspconfig'.pyright.setup{}
 require'lspconfig'.cssls.setup{}
 require'lspconfig'.html.setup{}
 require'lspconfig'.jsonls.setup{}
 require'lspconfig'.jedi_language_server.setup{}
 EOF
-
-lua << END
-require("lsp-format").setup {}
-require "lspconfig".gopls.setup { on_attach = require "lsp-format".on_attach }
-END
 
 "Bufferline
 set termguicolors
@@ -168,4 +155,9 @@ nmap <Leader>7 :BufferLineGoToBuffer 7<CR>
 nmap <Leader>8 :BufferLineGoToBuffer 8<CR>
 nmap <Leader>9 :BufferLineGoToBuffer 9<CR>
 
+inoremap <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | end
